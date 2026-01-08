@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image"
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
             }
         }
 
@@ -32,8 +32,8 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                      echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                      docker push $DOCKER_IMAGE:$DOCKER_TAG
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
                     '''
                 }
             }
@@ -44,11 +44,11 @@ pipeline {
                 echo "Deploying application to K3s cluster"
                 sshagent(['K3S-SSH']) {
                     sh """
-                      ssh -o StrictHostKeyChecking=no ec2-user@$K3S_NODE_IP << EOF
-                        kubectl set image deployment/java-app \
-                          java-app=${DOCKER_IMAGE}:${DOCKER_TAG}
-                        kubectl rollout status deployment/java-app
-                      EOF
+                        ssh -o StrictHostKeyChecking=no ec2-user@${K3S_NODE_IP} '
+                          kubectl set image deployment/java-app \
+                            java-app=${DOCKER_IMAGE}:${DOCKER_TAG}
+                          kubectl rollout status deployment/java-app
+                        '
                     """
                 }
             }
@@ -57,10 +57,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ CI-CD Pipeline completed successfully!"
+            echo "✅ CI/CD Pipeline completed successfully!"
         }
         failure {
-            echo "❌ Pipeline failed. Check logs."
+            echo "❌ CI/CD Pipeline failed. Check Jenkins logs."
         }
     }
 }
