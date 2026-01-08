@@ -7,16 +7,6 @@ pipeline {
         K3S_NODE_IP  = "172.31.26.223"   // K3s EC2 private IP
     }
 
-    stages {
-
-        stage('Checkout Code') {
-            steps {
-                echo "Cloning source code from GitHub"
-                git branch: 'main',
-                    url: 'https://github.com/<your-username>/<your-repo>.git'
-            }
-        }
-
         stage('Build Java App') {
             steps {
                 echo "Building Java application"
