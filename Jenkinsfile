@@ -14,8 +14,7 @@ pipeline {
                   mvn clean package -DskipTests
                 '''
             }
-        }
-
+        
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image"
