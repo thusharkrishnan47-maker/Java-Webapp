@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "thusharbkrishnan7/java-maven-app"
-        DOCKER_TAG = "${BUILD_NUMBER}"
+        DOCKER_TAG   = "${BUILD_NUMBER}"
         K3S_NODE_IP  = "172.31.26.223"
     }
 
@@ -44,11 +44,11 @@ pipeline {
                 echo "Deploying application to K3s cluster"
                 sshagent(['K3S-SSH']) {
                     sh """
-                      ssh -o StrictHostKeyChecking=no ec2-user@$K3S_NODE_IP '
-                        kubectl apply -f /home/ec2-user/k8s/deployment.yaml
-                        kubectl apply -f /home/ec2-user/k8s/service.yaml
+                      ssh -o StrictHostKeyChecking=no ec2-user@$K3S_NODE_IP << EOF
+                        kubectl set image deployment/java-app \
+                          java-app=${DOCKER_IMAGE}:${DOCKER_TAG}
                         kubectl rollout status deployment/java-app
-                      '
+                      EOF
                     """
                 }
             }
