@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy to K3s') {
             steps {
                 echo "Deploying application to K3s cluster"
-                sshagent(['k3s-ssh']) {
+                sshagent(['K3S-SSH']) {
                     sh """
                       ssh -o StrictHostKeyChecking=no ec2-user@$K3S_NODE_IP '
                         kubectl apply -f /home/ec2-user/k8s/deployment.yaml
