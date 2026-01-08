@@ -48,4 +48,74 @@
         table {
             width: 100%;
             margin-top: 25px;
-            border-collapse: coll
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        td:first-child {
+            font-weight: bold;
+            color: #80deea;
+            width: 40%;
+        }
+
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+<div class="card">
+
+    <h1>🚀 Java Web App on Kubernetes</h1>
+    <h2>CI/CD Pipeline Deployment Status</h2>
+
+    <div class="success">
+        ✅ BUILD & DEPLOYMENT SUCCESSFUL
+    </div>
+
+    <table>
+        <tr>
+            <td>CI/CD Pipeline</td>
+            <td>GitHub → Jenkins → Docker → Ansible → Kubernetes</td>
+        </tr>
+        <tr>
+            <td>Application Status</td>
+            <td>Running</td>
+        </tr>
+        <tr>
+            <td>Deployment Time</td>
+            <td><%= new Date() %></td>
+        </tr>
+        <tr>
+            <td>Pod / Host Name</td>
+            <td><%= InetAddress.getLocalHost().getHostName() %></td>
+        </tr>
+        <tr>
+            <td>Pod IP</td>
+            <td><%= request.getLocalAddr() %></td>
+        </tr>
+        <tr>
+            <td>CI Build Number</td>
+            <td>
+                <%= System.getenv("BUILD_NUMBER") != null 
+                        ? System.getenv("BUILD_NUMBER") 
+                        : "Injected via Docker Tag" %>
+            </td>
+        </tr>
+    </table>
+
+    <footer>
+        Powered by Jenkins • Docker • Ansible • Kubernetes
+    </footer>
+
+</div>
+</body>
+</html>
