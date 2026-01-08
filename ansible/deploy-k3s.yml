@@ -1,0 +1,12 @@
+- name: Deploy application to K3s
+  hosts: k3s
+  become: yes
+  tasks:
+
+    - name: Update image in Kubernetes deployment
+      shell: >
+        kubectl set image deployment/java-app
+        java-app={{ docker_image }}:{{ docker_tag }}
+
+    - name: Wait for rollout to complete
+      shell: kubectl rollout status deployment/java-app
