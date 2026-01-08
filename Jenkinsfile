@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "thusharbkrishnan7/java-maven-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
-        K3S_NODE_IP  = "172.31.26.223"
     }
 
     stages {
@@ -39,18 +38,14 @@ pipeline {
             }
         }
 
-        stage('Deploy to K3s') {
+        stage('Deploy to K3s using Ansible') {
             steps {
-                echo "Deploying application to K3s cluster"
-                sshagent(['K3S-SSH']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${K3S_NODE_IP} '
-                          kubectl set image deployment/java-app \
-                            java-app=${DOCKER_IMAGE}:${DOCKER_TAG}
-                          kubectl rollout status deployment/java-app
-                        '
-                    """
-                }
+                echo "Deploying application to K3s via Ansible"
+                sh """
+                    ansible-playbook ansible/deploy-k3s.yml \
+                      -i ansible/inventory.ini \
+                      --extra-vars "docker_image=${DOCKER_IMAGE} docker_tag=${DOCKER_TAG}"
+                """
             }
         }
     }
