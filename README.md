@@ -1,5 +1,4 @@
-<img width="940" height="630" alt="image" src="https://github.com/user-attachments/assets/d05fe272-e56b-456d-af53-3ddc9285af0b" />Below is a **polished, professional `README.md`** version of your project documentation.
-You can **directly copy-paste this into your GitHub repository**.
+<img width="940" height="630" alt="image" src="https://github.com/user-attachments/assets/d05fe272-e56b-456d-af53-3ddc9285af0b" />
 
 ---
 
