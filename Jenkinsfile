@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "thusharbkrishnan7/java-maven-app"
-        DOCKER_TAG   = "latest"
+        DOCKER_TAG = "${BUILD_NUMBER}"
         K3S_NODE_IP  = "172.31.26.223"
     }
 
