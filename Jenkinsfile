@@ -41,11 +41,13 @@ pipeline {
         stage('Deploy to K3s using Ansible') {
             steps {
                 echo "Deploying application to K3s via Ansible"
-                sh """
-                    ansible-playbook ansible/deploy-k3s.yml \
-                      -i ansible/inventory.ini \
-                      --extra-vars "docker_image=${DOCKER_IMAGE} docker_tag=${DOCKER_TAG}"
-                """
+                sshagent(['K3S-SSH']) {
+                    sh """
+                        ansible-playbook ansible/deploy-k3s.yml \
+                          -i ansible/inventory.ini \
+                          --extra-vars "docker_image=${DOCKER_IMAGE} docker_tag=${DOCKER_TAG}"
+                    """
+                }
             }
         }
     }
